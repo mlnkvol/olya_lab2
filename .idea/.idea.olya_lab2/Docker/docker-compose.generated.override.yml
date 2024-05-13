@@ -1,0 +1,22 @@
+# This is a generated file. Not intended for manual editing.
+version: "3"
+services:
+  app:
+    build:
+      context: "C:\\Users\\melni\\OneDrive\\Рабочий стол\\KNU\\ІСТП\\lab2\\olya_lab2"
+      dockerfile: "olya_lab2/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/olya_lab2.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "olya_lab2:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\melni\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\Users\\melni\\OneDrive\\Рабочий стол\\KNU\\ІСТП\\lab2\\olya_lab2\\olya_lab2:/app:rw"
+    - "C:\\Users\\melni\\OneDrive\\Рабочий стол\\KNU\\ІСТП\\lab2\\olya_lab2:/src:rw"
+    working_dir: "/app"
