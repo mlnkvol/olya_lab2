@@ -15,6 +15,6 @@ public class Material
     public string Title { get; set; }
 
     public string Content { get; set; }
-
+    
     public Course Course { get; set; }
 }

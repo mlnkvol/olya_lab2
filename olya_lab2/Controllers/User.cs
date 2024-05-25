@@ -10,52 +10,57 @@ namespace YourNamespace.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CourseController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly CoursePlatformContext _context;
 
-        public CourseController(CoursePlatformContext context)
+        public UserController(CoursePlatformContext context)
         {
             _context = context;
         }
 
+        // GET: api/User
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Courses.ToListAsync();
+            return await _context.Users.ToListAsync();
         }
 
+        // GET: api/User/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Course>> GetCourse(Guid id)
+        public async Task<ActionResult<User>> GetUser(Guid id)
         {
-            var course = await _context.Courses.FindAsync(id);
+            var user = await _context.Users.FindAsync(id);
 
-            if (course == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return course;
+            return user;
         }
 
+        // POST: api/User
         [HttpPost]
-        public async Task<ActionResult<Course>> CreateCourse(Course course)
+        public async Task<ActionResult<User>> CreateUser(User user)
         {
-            _context.Courses.Add(course);
+            user.Id = Guid.NewGuid();
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetCourse), new { id = course.CourseId }, course);
+            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
-        
+
+        // PUT: api/User/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCourse(Guid id, Course course)
+        public async Task<IActionResult> UpdateUser(Guid id, User user)
         {
-            if (id != course.CourseId)
+            if (id != user.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(course).State = EntityState.Modified;
+            _context.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -63,7 +68,7 @@ namespace YourNamespace.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CourseExists(id))
+                if (!UserExists(id))
                 {
                     return NotFound();
                 }
@@ -76,24 +81,25 @@ namespace YourNamespace.Controllers
             return NoContent();
         }
 
-        private bool CourseExists(Guid id)
-        {
-            return _context.Courses.Any(e => e.CourseId == id);
-        }
-        
+        // DELETE: api/User/{id}
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCourse(Guid id)
+        public async Task<IActionResult> DeleteUser(Guid id)
         {
-            var course = await _context.Courses.FindAsync(id);
-            if (course == null)
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            _context.Courses.Remove(course);
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        private bool UserExists(Guid id)
+        {
+            return _context.Users.Any(e => e.Id == id);
         }
     }
 }
